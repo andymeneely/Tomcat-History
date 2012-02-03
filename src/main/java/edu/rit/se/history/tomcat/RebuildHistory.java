@@ -1,5 +1,75 @@
 package edu.rit.se.history.tomcat;
-//This is a test comment
-public class RebuildHistory {
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Properties;
+
+import org.apache.log4j.xml.DOMConfigurator;
+import org.chaoticbits.devactivity.DBUtil;
+import org.chaoticbits.devactivity.PropsLoader;
+import org.chaoticbits.devactivity.devnetwork.factory.LoadSVNtoDB;
+
+public class RebuildHistory {
+	private static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(RebuildHistory.class);
+
+	private static File datadir;
+
+	public static void main(String[] args) throws Exception {
+		Properties props = setUpProps();
+		DBUtil dbUtil = setUpDB(props);
+
+		rebuildSchema(dbUtil);
+		loadSVNXML(dbUtil, props);
+		filterSVNLog(dbUtil, props);
+		loadFileListing(dbUtil, props);
+		loadVulnerabilitiesToFiles(dbUtil, props);
+		loadGroundedTheoryResults(dbUtil, props);
+		buildAnalysis(dbUtil, props);
+	}
+
+	private static Properties setUpProps() throws IOException {
+		Properties props = PropsLoader.getProperties("wiresharkhistory.properties");
+		DOMConfigurator.configure("log4j.properties.xml");
+		datadir = new File(props.getProperty("history.datadir"));
+		return props;
+	}
+
+	private static DBUtil setUpDB(Properties props) throws ClassNotFoundException {
+		Class.forName("com.mysql.jdbc.Driver");
+		DBUtil dbUtil = new DBUtil(props.getProperty("history.dbuser"), props.getProperty("history.dbpw"), props.getProperty("history.dburl"));
+		return dbUtil;
+	}
+
+	private static void rebuildSchema(DBUtil dbUtil) throws FileNotFoundException, SQLException, IOException {
+		log.info("Rebuilding database schema...");
+		dbUtil.executeSQLFile("sql/createTables.sql");
+	}
+
+	private static void loadSVNXML(DBUtil dbUtil, Properties props) throws Exception {
+		log.info("Loading the SVN XML into database...");
+		String file = props.getProperty("history.svnlogxml");
+		new LoadSVNtoDB(dbUtil, new File(datadir, file)).run();
+	}
+
+	private static void loadFileListing(DBUtil dbUtil, Properties props) {
+		throw new IllegalStateException("unimplemented!");
+	}
+
+	private static void loadGroundedTheoryResults(DBUtil dbUtil, Properties props) {
+		throw new IllegalStateException("unimplemented!");
+	}
+
+	private static void filterSVNLog(DBUtil dbUtil, Properties props) {
+		throw new IllegalStateException("unimplemented!");
+	}
+
+	private static void loadVulnerabilitiesToFiles(DBUtil dbUtil, Properties props) {
+		throw new IllegalStateException("unimplemented!");
+	}
+
+	private static void buildAnalysis(DBUtil dbUtil, Properties props) {
+		throw new IllegalStateException("unimplemented!");
+	}
 }
