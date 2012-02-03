@@ -1,0 +1,6 @@
+# Copy and paste this file to build.properties for each of your local installations
+# Edit for yourself as needed
+#history.datadir=c:/data/tomcat
+#history.dbuser=tomcathistory
+#history.dbpw=tomcathistory
+#history.dburl=jdbc:mysql://127.0.0.1:3306/tomcathistory
