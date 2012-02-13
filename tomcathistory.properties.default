@@ -4,3 +4,4 @@
 #history.dbuser=tomcathistory
 #history.dbpw=tomcathistory
 #history.dburl=jdbc:mysql://127.0.0.1:3306/tomcathistory
+#history.cve2files=Tomcat Vulnerabilities - CVEs to Files.csv
