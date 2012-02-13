@@ -1,6 +1,7 @@
 DROP VIEW IF EXISTS RepoLog;
 DROP TABLE IF EXISTS SVNLog;
 DROP TABLE IF EXISTS SVNLogFiles;
+DROP TABLE IF EXISTS CVEToFiles;
 
 CREATE TABLE SVNLog (
   ID int(10) unsigned NOT NULL auto_increment,
@@ -20,6 +21,13 @@ CREATE TABLE SVNLogFiles (
   LinesInserted int(10) unsigned,
   LinesDeleted int(10) unsigned,
   LinesNew int(10) unsigned,
+  PRIMARY KEY  (`ID`)
+) ENGINE=MyISAM;
+
+CREATE TABLE CVEToFiles (
+  ID int(10) unsigned NOT NULL auto_increment,
+  CVE VARCHAR(15) NOT NULL,
+  Filepath varchar(500) NOT NULL,
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM;
 

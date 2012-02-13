@@ -11,6 +11,8 @@ import org.chaoticbits.devactivity.DBUtil;
 import org.chaoticbits.devactivity.PropsLoader;
 import org.chaoticbits.devactivity.devnetwork.factory.LoadSVNtoDB;
 
+import edu.rit.se.history.tomcat.parse.VulnerabilitiesToFilesParser;
+
 public class RebuildHistory {
 	private static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(RebuildHistory.class);
 
@@ -21,16 +23,17 @@ public class RebuildHistory {
 		DBUtil dbUtil = setUpDB(props);
 
 		rebuildSchema(dbUtil);
-		loadSVNXML(dbUtil, props);
-		filterSVNLog(dbUtil, props);
-		loadFileListing(dbUtil, props);
+		// loadSVNXML(dbUtil, props);
+		// filterSVNLog(dbUtil, props);
+		// loadFileListing(dbUtil, props);
 		loadVulnerabilitiesToFiles(dbUtil, props);
-		loadGroundedTheoryResults(dbUtil, props);
-		buildAnalysis(dbUtil, props);
+		// loadGroundedTheoryResults(dbUtil, props);
+		// buildAnalysis(dbUtil, props);
+		log.info("Done.");
 	}
 
 	private static Properties setUpProps() throws IOException {
-		Properties props = PropsLoader.getProperties("wiresharkhistory.properties");
+		Properties props = PropsLoader.getProperties("tomcathistory.properties");
 		DOMConfigurator.configure("log4j.properties.xml");
 		datadir = new File(props.getProperty("history.datadir"));
 		return props;
@@ -65,8 +68,9 @@ public class RebuildHistory {
 		throw new IllegalStateException("unimplemented!");
 	}
 
-	private static void loadVulnerabilitiesToFiles(DBUtil dbUtil, Properties props) {
-		throw new IllegalStateException("unimplemented!");
+	private static void loadVulnerabilitiesToFiles(DBUtil dbUtil, Properties props) throws Exception {
+		log.info("Parsing CVE to Files...");
+		new VulnerabilitiesToFilesParser().parse(dbUtil, new File(datadir, props.getProperty("history.cve2files")));
 	}
 
 	private static void buildAnalysis(DBUtil dbUtil, Properties props) {
