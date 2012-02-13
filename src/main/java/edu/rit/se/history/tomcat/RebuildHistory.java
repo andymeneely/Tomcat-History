@@ -11,6 +11,7 @@ import org.chaoticbits.devactivity.DBUtil;
 import org.chaoticbits.devactivity.PropsLoader;
 import org.chaoticbits.devactivity.devnetwork.factory.LoadSVNtoDB;
 
+import edu.rit.se.history.tomcat.parse.FileListingParser;
 import edu.rit.se.history.tomcat.parse.VulnerabilitiesToFilesParser;
 
 public class RebuildHistory {
@@ -23,11 +24,12 @@ public class RebuildHistory {
 		DBUtil dbUtil = setUpDB(props);
 
 		rebuildSchema(dbUtil);
-		// loadSVNXML(dbUtil, props);
+		loadSVNXML(dbUtil, props);
 		// filterSVNLog(dbUtil, props);
-		// loadFileListing(dbUtil, props);
+		loadFileListing(dbUtil, props);
 		loadVulnerabilitiesToFiles(dbUtil, props);
 		// loadGroundedTheoryResults(dbUtil, props);
+		// optimizeTables(dbUtil);
 		// buildAnalysis(dbUtil, props);
 		log.info("Done.");
 	}
@@ -56,8 +58,13 @@ public class RebuildHistory {
 		new LoadSVNtoDB(dbUtil, new File(datadir, file)).run();
 	}
 
-	private static void loadFileListing(DBUtil dbUtil, Properties props) {
-		throw new IllegalStateException("unimplemented!");
+	private static void loadFileListing(DBUtil dbUtil, Properties props) throws FileNotFoundException, SQLException {
+		log.info("Parsing release files for Tomcat 5.5.0...");
+		new FileListingParser().parse(dbUtil, new File(datadir, props.getProperty("history.filelisting.v5")), "5.5.0");
+		log.info("Parsing release files for Tomcat 6.0.0...");
+		new FileListingParser().parse(dbUtil, new File(datadir, props.getProperty("history.filelisting.v6")), "6.0.0");
+		log.info("Parsing release files for Tomcat 7.0.0...");
+		new FileListingParser().parse(dbUtil, new File(datadir, props.getProperty("history.filelisting.v7")), "7.0.0");
 	}
 
 	private static void loadGroundedTheoryResults(DBUtil dbUtil, Properties props) {

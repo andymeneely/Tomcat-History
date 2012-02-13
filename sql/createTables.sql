@@ -2,6 +2,7 @@ DROP VIEW IF EXISTS RepoLog;
 DROP TABLE IF EXISTS SVNLog;
 DROP TABLE IF EXISTS SVNLogFiles;
 DROP TABLE IF EXISTS CVEToFiles;
+DROP TABLE IF EXISTS Filepaths;
 
 CREATE TABLE SVNLog (
   ID int(10) unsigned NOT NULL auto_increment,
@@ -24,6 +25,11 @@ CREATE TABLE SVNLogFiles (
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM;
 
+CREATE VIEW RepoLog AS
+	SELECT l.id, l.revision, l.authorname, l.authordate, l.message, lf.filepath, lf.Action 
+	FROM SVNLog l, SVNLogFiles lf
+  		WHERE lf.revision=l.revision;
+  		
 CREATE TABLE CVEToFiles (
   ID int(10) unsigned NOT NULL auto_increment,
   CVE VARCHAR(15) NOT NULL,
@@ -31,7 +37,9 @@ CREATE TABLE CVEToFiles (
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM;
 
-CREATE VIEW RepoLog AS
-	SELECT l.id, l.revision, l.authorname, l.authordate, l.message, lf.filepath, lf.Action 
-	FROM SVNLog l, SVNLogFiles lf
-  		WHERE lf.revision=l.revision;
+CREATE TABLE Filepaths (
+  ID int(10) unsigned NOT NULL auto_increment,
+  Filepath varchar(500) NOT NULL,
+  TomcatRelease varchar(5) NOT NULL,
+  PRIMARY KEY  (`ID`)
+) ENGINE=MyISAM;

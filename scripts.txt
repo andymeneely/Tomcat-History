@@ -1,0 +1,9 @@
+#These were used to get the full SVN log:
+
+$ svn log http://svn.apache.org/repos/asf/tomcat --verbose --xml > tomcat-full-svnlog.xml
+$ svn log http://svn.apache.org/repos/asf/tocmat/trunk --verbose --xml > tomcat-trunk-svnlog.xml
+
+# To get the list of files for Tomcat 5.5, 6.0, and 7.0
+$ svn ls -R http://svn.apache.org/repos/asf/tomcat/tc5.5.x/tags/TOMCAT_5_5_0/ > tomcat5.5.0-files.txt 
+$ svn ls -R http://svn.apache.org/repos/asf/tomcat/tc6.0.x/tags/TOMCAT_6_0_0/ > tomcat6.0.0-files.txt
+$ svn ls -R http://svn.apache.org/repos/asf/tomcat/tc7.0.x/tags/TOMCAT_7_0_0/ > tomcat7.0.0-files.txt
