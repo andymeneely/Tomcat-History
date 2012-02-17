@@ -24,7 +24,7 @@ public class RebuildHistory {
 		DBUtil dbUtil = setUpDB(props);
 
 		rebuildSchema(dbUtil);
-		loadSVNXML(dbUtil, props);
+		//loadSVNXML(dbUtil, props);
 		// filterSVNLog(dbUtil, props);
 		loadFileListing(dbUtil, props);
 		loadVulnerabilitiesToFiles(dbUtil, props);
