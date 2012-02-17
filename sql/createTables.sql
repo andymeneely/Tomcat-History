@@ -35,7 +35,7 @@ CREATE VIEW RepoLog AS
 CREATE TABLE CVE (
   ID int(10) unsigned NOT NULL auto_increment,
   CVE VARCHAR(15) NOT NULL,
-  CWE INTEGER NOT NULL,
+  CWE VARCHAR(25) NOT NULL,
   CVSS DOUBLE NOT NULL,
   ConfidentialityImpact VARCHAR(10) NOT NULL,
   IntegrityImpact VARCHAR(10) NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE CVE (
 CREATE TABLE CVESVNFix (
   ID int(10) unsigned NOT NULL auto_increment,
   CVE VARCHAR(15) NOT NULL,
-  SVNRevision INTEGER NOT NULL,
+  SVNRevision INTEGER,
   TomcatRelease VARCHAR(5) NOT NULL,
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM;
