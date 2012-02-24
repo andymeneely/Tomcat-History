@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS Filepaths;
 DROP TABLE IF EXISTS CVE;
 DROP TABLE IF EXISTS CVESVNFix;
 DROP TABLE IF EXISTS CVENonSVNFix;
+DROP TABLE IF EXISTS CVEGroundedTheory;
 
 CREATE TABLE SVNLog (
   ID int(10) unsigned NOT NULL auto_increment,
@@ -41,6 +42,18 @@ CREATE TABLE CVE (
   IntegrityImpact VARCHAR(10) NOT NULL,
   AuthRequired VARCHAR(100) NOT NULL,
   GainedAccess VARCHAR(10) NOT NULL,
+  PRIMARY KEY  (`ID`)
+) ENGINE=MyISAM;
+
+CREATE TABLE CVEGroundedTheory (
+  ID int(10) unsigned NOT NULL auto_increment,
+  CVE VARCHAR(15) NOT NULL,
+  FixNewCode ENUM('Yes', 'No') NOT NULL,
+  Cascades ENUM('Yes', 'No') NOT NULL,
+  InputValidation ENUM('Yes', 'No') NOT NULL,
+  OutputCleansing ENUM('Yes', 'No') NOT NULL,
+  NonIOImprovedLogic ENUM('Yes', 'No') NOT NULL,
+  DomainSpecific ENUM('Yes', 'No') NOT NULL,
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM;
 

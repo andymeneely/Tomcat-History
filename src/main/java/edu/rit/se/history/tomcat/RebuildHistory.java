@@ -12,6 +12,7 @@ import org.chaoticbits.devactivity.PropsLoader;
 import org.chaoticbits.devactivity.devnetwork.factory.LoadSVNtoDB;
 
 import edu.rit.se.history.tomcat.parse.FileListingParser;
+import edu.rit.se.history.tomcat.parse.GroundedTheoryResultsParser;
 import edu.rit.se.history.tomcat.parse.VulnerabilitiesToFilesParser;
 
 public class RebuildHistory {
@@ -24,11 +25,11 @@ public class RebuildHistory {
 		DBUtil dbUtil = setUpDB(props);
 
 		rebuildSchema(dbUtil);
-		//loadSVNXML(dbUtil, props);
+		// loadSVNXML(dbUtil, props);
 		// filterSVNLog(dbUtil, props);
 		loadFileListing(dbUtil, props);
 		loadVulnerabilitiesToFiles(dbUtil, props);
-		// loadGroundedTheoryResults(dbUtil, props);
+		loadGroundedTheoryResults(dbUtil, props);
 		// optimizeTables(dbUtil);
 		// buildAnalysis(dbUtil, props);
 		log.info("Done.");
@@ -67,8 +68,9 @@ public class RebuildHistory {
 		new FileListingParser().parse(dbUtil, new File(datadir, props.getProperty("history.filelisting.v7")), "7.0.0");
 	}
 
-	private static void loadGroundedTheoryResults(DBUtil dbUtil, Properties props) {
-		throw new IllegalStateException("unimplemented!");
+	private static void loadGroundedTheoryResults(DBUtil dbUtil, Properties props) throws Exception {
+		log.info("Parsing grounded theory results...");
+		new GroundedTheoryResultsParser().parse(dbUtil, new File(datadir, props.getProperty("history.groundedtheory")));
 	}
 
 	private static void filterSVNLog(DBUtil dbUtil, Properties props) {
