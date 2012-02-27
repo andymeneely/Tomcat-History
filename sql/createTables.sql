@@ -36,10 +36,16 @@ CREATE VIEW RepoLog AS
 CREATE TABLE CVE (
   ID int(10) unsigned NOT NULL auto_increment,
   CVE VARCHAR(15) NOT NULL,
+  Tomcat55 ENUM('Yes', 'No') NOT NULL,
+  Tomcat6 ENUM('Yes', 'No') NOT NULL,
+  Tomcat7 ENUM('Yes', 'No') NOT NULL,
   CWE VARCHAR(25) NOT NULL,
+  CWETop25 ENUM('Yes', 'No') NOT NULL,
   CVSS DOUBLE NOT NULL,
   ConfidentialityImpact VARCHAR(10) NOT NULL,
   IntegrityImpact VARCHAR(10) NOT NULL,
+  AvailabilityImpact VARCHAR(10) NOT NULL,
+  AccessComplexity VARCHAR(10) NOT NULL,
   AuthRequired VARCHAR(100) NOT NULL,
   GainedAccess VARCHAR(10) NOT NULL,
   PRIMARY KEY  (`ID`)

@@ -11,6 +11,7 @@ import org.chaoticbits.devactivity.DBUtil;
 import org.chaoticbits.devactivity.PropsLoader;
 import org.chaoticbits.devactivity.devnetwork.factory.LoadSVNtoDB;
 
+import edu.rit.se.history.tomcat.parse.CVEsParser;
 import edu.rit.se.history.tomcat.parse.FileListingParser;
 import edu.rit.se.history.tomcat.parse.GroundedTheoryResultsParser;
 import edu.rit.se.history.tomcat.parse.VulnerabilitiesToFilesParser;
@@ -30,6 +31,7 @@ public class RebuildHistory {
 		loadFileListing(dbUtil, props);
 		loadVulnerabilitiesToFiles(dbUtil, props);
 		loadGroundedTheoryResults(dbUtil, props);
+		loadCVEs(dbUtil, props);
 		// optimizeTables(dbUtil);
 		// buildAnalysis(dbUtil, props);
 		log.info("Done.");
@@ -71,6 +73,11 @@ public class RebuildHistory {
 	private static void loadGroundedTheoryResults(DBUtil dbUtil, Properties props) throws Exception {
 		log.info("Parsing grounded theory results...");
 		new GroundedTheoryResultsParser().parse(dbUtil, new File(datadir, props.getProperty("history.groundedtheory")));
+	}
+
+	private static void loadCVEs(DBUtil dbUtil, Properties props) throws Exception {
+		log.info("Parsing CVE details...");
+		new CVEsParser().parse(dbUtil, new File(datadir, props.getProperty("history.cves")));
 	}
 
 	private static void filterSVNLog(DBUtil dbUtil, Properties props) {
