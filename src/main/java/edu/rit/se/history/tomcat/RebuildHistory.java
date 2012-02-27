@@ -36,8 +36,7 @@ public class RebuildHistory {
 		this.dbUtil = setUpDB(props);
 	}
 
-	private void run() throws Exception {
-
+	public void run() throws Exception {
 		rebuildSchema(dbUtil);
 		// loadSVNXML(dbUtil, props);
 		// filterSVNLog(dbUtil, props);

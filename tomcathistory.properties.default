@@ -1,7 +1,7 @@
 # Copy and paste this file to build.properties for each of your local installations
 # Edit for yourself as needed
 history.datadir=c:/local/data/tomcat
-history.cve2files=Tomcat Vulnerabilities - CVEs to Files.csv
+history.cve2files=Tomcat Vulnerabilities - CVEs to Fixes.csv
 history.groundedtheory=Tomcat Vulnerabilities Grounded Theory Study - Resolution.csv
 history.cves=Tomcat Vulnerabilities - CVEs.csv
 history.svnlogxml=tomcat-full-svnlog.xml
