@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Properties;
 
 import org.apache.log4j.xml.DOMConfigurator;
@@ -45,7 +46,7 @@ public class RebuildHistory {
 		loadVulnerabilitiesToFiles(dbUtil, props);
 		loadGroundedTheoryResults(dbUtil, props);
 		loadCVEs(dbUtil, props);
-		// optimizeTables(dbUtil);
+		optimizeTables(dbUtil);
 		// buildAnalysis(dbUtil, props);
 		log.info("Done.");
 	}
@@ -103,6 +104,11 @@ public class RebuildHistory {
 	private void loadVulnerabilitiesToFiles(DBUtil dbUtil, Properties props) throws Exception {
 		log.info("Parsing CVE to Files...");
 		new VulnerabilitiesToFilesParser().parse(dbUtil, new File(datadir, props.getProperty("history.cve2files")));
+	}
+
+	private void optimizeTables(DBUtil dbUtil) throws FileNotFoundException, SQLException, IOException {
+		log.info("Optimizing tables...");
+		dbUtil.executeSQLFile("sql/optimizeTables.sql");
 	}
 
 	private void buildAnalysis(DBUtil dbUtil, Properties props) {
