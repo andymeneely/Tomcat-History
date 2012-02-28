@@ -11,6 +11,7 @@ import org.chaoticbits.devactivity.DBUtil;
 import org.chaoticbits.devactivity.PropsLoader;
 import org.chaoticbits.devactivity.devnetwork.factory.LoadSVNtoDB;
 
+import edu.rit.se.history.tomcat.filter.FilepathFilters;
 import edu.rit.se.history.tomcat.parse.CVEsParser;
 import edu.rit.se.history.tomcat.parse.FileListingParser;
 import edu.rit.se.history.tomcat.parse.GroundedTheoryResultsParser;
@@ -58,7 +59,8 @@ public class RebuildHistory {
 
 	private DBUtil setUpDB(Properties props) throws ClassNotFoundException {
 		Class.forName("com.mysql.jdbc.Driver");
-		DBUtil dbUtil = new DBUtil(props.getProperty("history.dbuser"), props.getProperty("history.dbpw"), props.getProperty("history.dburl"));
+		DBUtil dbUtil = new DBUtil(props.getProperty("history.dbuser"), props.getProperty("history.dbpw"),
+				props.getProperty("history.dburl"));
 		return dbUtil;
 	}
 
@@ -80,6 +82,8 @@ public class RebuildHistory {
 		new FileListingParser().parse(dbUtil, new File(datadir, props.getProperty("history.filelisting.v6")), "6.0.0");
 		log.info("Parsing release files for Tomcat 7.0.0...");
 		new FileListingParser().parse(dbUtil, new File(datadir, props.getProperty("history.filelisting.v7")), "7.0.0");
+		log.info("Filtering out filepaths for all Tomcat versions...");
+		new FilepathFilters().filter(dbUtil, new File("filters/ignored-filepaths.txt"));
 	}
 
 	private void loadGroundedTheoryResults(DBUtil dbUtil, Properties props) throws Exception {

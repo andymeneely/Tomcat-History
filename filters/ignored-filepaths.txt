@@ -1,0 +1,44 @@
+# This is an ignored filepath filter
+# Lines that start with a hash, or are all whitespace get ignored
+# Anything else are put into an SQL WHERE LIKE clause 
+
+# Ignore all directories - filepaths that end in /
+%/
+
+# Ignore everything starting with jasper
+jasper/%
+
+# Any files that end in these extensions
+%.txt
+%.html
+%.htm
+%.rtf
+%.pro
+%.dia
+%.ico
+%.bmp
+%.jpg
+%.png
+%.gif
+
+# These specific files, no matter what directory
+%log4j.properties
+%changelog.xml
+%.cvsignore
+%KEYS
+%LICENSE
+%NOTICE
+%INSTALLLICENSE
+%RELEASE-NOTES
+%CHANGES
+%JAKARTA
+%HISTORY
+
+# Language translation files
+%LocalStrings_%.properties
+
+# TODO Do we want to ignore specific connectors? 
+# e.g. connectors/jk/native/%
+
+# Any documentation anywhere
+%/doc/%
