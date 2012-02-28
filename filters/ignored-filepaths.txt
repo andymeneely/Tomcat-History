@@ -41,4 +41,5 @@ jasper/%
 # e.g. connectors/jk/native/%
 
 # Any documentation anywhere
-%/doc/%
+# Yes, I see the irony of doing SQL injection in our own research scripts 
+%/docs/%' AND filepath NOT LIKE '%.war
