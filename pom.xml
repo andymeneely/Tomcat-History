@@ -4,7 +4,12 @@
 	<groupId>edu.rit.se.history</groupId>
 	<artifactId>tomcat</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
+	<repositories>
+	<repository>
+		<id>mandubian-mvn</id>
+		<url>http://mandubian-mvn.googlecode.com/svn/trunk/mandubian-mvn/repository</url>
+	</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>log4j</groupId>
@@ -57,6 +62,16 @@
 			<groupId>net.sourceforge.htmlunit</groupId>
 			<artifactId>htmlunit</artifactId>
 			<version>2.9</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gdata</groupId>
+			<artifactId>gdata-core-1.0</artifactId>
+			<version>1.36.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gdata</groupId>
+			<artifactId>gdata-spreadsheet-3.0</artifactId>
+			<version>1.41.5</version>
 		</dependency>
 	</dependencies>
 </project>
