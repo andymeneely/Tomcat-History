@@ -11,7 +11,7 @@ import com.mysql.jdbc.Connection;
 
 public class TotalCountsTest {
 
-	private static final int TOTAL_CVES = 48;
+	private static final int TOTAL_CVES = 52;
 	private static RebuildHistory history;
 
 	@BeforeClass
