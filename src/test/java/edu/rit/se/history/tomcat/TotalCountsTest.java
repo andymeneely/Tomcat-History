@@ -61,7 +61,7 @@ public class TotalCountsTest {
 		conn.close();
 		assertEquals("All vulnerable files are in filepath release list", expectedCount, actualCount);
 		// Query to debug this one:
-		// SELECT * FROM CVENonSVNFix cf LEFT OUTER JOIN Filepaths f ON cf.filepath=f.filepath
+		// SELECT * FROM CVENonSVNFix cf LEFT OUTER JOIN Filepaths f ON cf.filepath=f.filepath ORDER BY cf.cve ASC
 	}
 
 	// @Test
