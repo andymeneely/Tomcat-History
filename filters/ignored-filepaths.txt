@@ -33,6 +33,8 @@ jasper/%
 %CHANGES
 %JAKARTA
 %HISTORY
+%.classpath
+%.project
 
 # Language translation files
 %LocalStrings_%.properties
