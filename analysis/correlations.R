@@ -3,6 +3,7 @@ library(lattice)
 conn <- odbcConnect("tomcathistory", uid="tomcathistory", pwd="tomcathistory", case="tolower")
 
 cve <- sqlQuery(conn, "SELECT * FROM CVEResults")
+files <- sqlQuery(conn, "SELECT * FROM FileResults")
 
 # What percentage of the fixes are new code?
 length(cve$FixNewCode[cve$FixNewCode=="Yes"]) / length(cve$FixNewCode)

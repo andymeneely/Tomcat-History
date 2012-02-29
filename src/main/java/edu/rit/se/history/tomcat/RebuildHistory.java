@@ -17,6 +17,7 @@ import edu.rit.se.history.tomcat.filter.FilepathFilters;
 import edu.rit.se.history.tomcat.parse.CVEsParser;
 import edu.rit.se.history.tomcat.parse.FileListingParser;
 import edu.rit.se.history.tomcat.parse.GroundedTheoryResultsParser;
+import edu.rit.se.history.tomcat.parse.SLOCParser;
 import edu.rit.se.history.tomcat.parse.VulnerabilitiesToFilesParser;
 import edu.rit.se.history.tomcat.scrapers.GoogleDocExport;
 
@@ -50,6 +51,7 @@ public class RebuildHistory {
 		loadGroundedTheoryResults(dbUtil, props);
 		loadCVEs(dbUtil, props);
 		optimizeTables(dbUtil);
+		loadSLOC(dbUtil, props);
 		buildAnalysis(dbUtil, props);
 		log.info("Done.");
 	}
@@ -96,6 +98,15 @@ public class RebuildHistory {
 		new FileListingParser().parse(dbUtil, new File(datadir, props.getProperty("history.filelisting.v7")), "7.0.0");
 		log.info("Filtering out filepaths for all Tomcat versions...");
 		new FilepathFilters().filter(dbUtil, new File("filters/ignored-filepaths.txt"));
+	}
+
+	private void loadSLOC(DBUtil dbUtil2, Properties props2) throws SQLException, IOException {
+		log.info("Loading SLOC counts for Tomcat 5.5.0...");
+		new SLOCParser().parse(dbUtil, new File(datadir, props.getProperty("history.sloc.v5")), "5.5.0");
+		log.info("Loading SLOC counts for Tomcat 6.0.0...");
+		new SLOCParser().parse(dbUtil, new File(datadir, props.getProperty("history.sloc.v6")), "6.0.0");
+		log.info("Loading SLOC counts for Tomcat 7.0.0...");
+		new SLOCParser().parse(dbUtil, new File(datadir, props.getProperty("history.sloc.v7")), "7.0.0");
 	}
 
 	private void loadGroundedTheoryResults(DBUtil dbUtil, Properties props) throws Exception {

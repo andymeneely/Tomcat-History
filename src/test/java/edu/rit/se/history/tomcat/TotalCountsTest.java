@@ -72,6 +72,20 @@ public class TotalCountsTest {
 		// SELECT cve,filepath FROM cvenonsvnfix WHERE filepath NOT IN (SELECT filepath FROM filepaths)
 	}
 
+	@Test
+	public void allSLOCAccountedFor() throws Exception {
+		Connection conn = history.getDbUtil().getConnection();
+		ResultSet rs = conn.createStatement().executeQuery(
+				"SELECT COUNT(*) FROM filepaths WHERE SLOC IS NULL AND (Filepath LIKE '%.java' OR Filepath LIKE '%.c' OR Filepath LIKE '%.h')");
+		rs.next();
+		int actualCount = rs.getInt(1);
+		conn.close();
+		assertEquals("Only one file was added post-release", 0, actualCount);
+		// Query to debug this one:
+		// SELECT * FROM filepaths WHERE SLOC IS NULL AND (Filepath LIKE '%.java' OR Filepath LIKE '%.c' OR
+		// Filepath LIKE '%.h')
+	}
+
 	// @Test
 	// public void fileCounts() throws Exception {
 	// throw new IllegalStateException("unimplemented!");

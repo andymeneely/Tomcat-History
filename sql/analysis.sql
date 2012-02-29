@@ -1,4 +1,5 @@
 DROP VIEW IF EXISTS CVEResults;
+DROP VIEW IF EXISTS FileResults;
 
 CREATE VIEW CVEResults AS 
 	SELECT 	c.CVE, 
@@ -20,4 +21,14 @@ CREATE VIEW CVEResults AS
 			cg.NonIOImprovedLogic,
 			cg.DomainSpecific
 	FROM CVE c INNER JOIN CVEGroundedTheory cg ON (c.cve=cg.cve)
+;
+
+CREATE VIEW FileResults AS 
+	SELECT  f.filepath,
+        f.TomcatRelease, 
+        f.SLOCType, 
+        f.SLOC,
+        IF(cf.CVE IS NULL, 'neutral','vulnerable') vuln,
+        c.*
+	FROM (filepaths f LEFT OUTER JOIN CVENonSVNFix cf ON (f.filepath=cf.filepath)) LEFT OUTER JOIN CVE c ON (cf.CVE=c.CVE)
 ;

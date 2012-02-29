@@ -38,6 +38,7 @@ jasper/%
 
 # Language translation files
 %LocalStrings_%.properties
+%LocalStrings.properties
 
 # TODO Do we want to ignore specific connectors? 
 # e.g. connectors/jk/native/%

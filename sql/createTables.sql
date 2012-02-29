@@ -83,5 +83,7 @@ CREATE TABLE Filepaths (
   ID int(10) unsigned NOT NULL auto_increment,
   Filepath varchar(500) NOT NULL,
   TomcatRelease varchar(5) NOT NULL,
+  SLOCType VARCHAR(100),
+  SLOC INTEGER,
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM;
