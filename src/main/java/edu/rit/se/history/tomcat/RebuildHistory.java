@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Properties;
 
 import org.apache.log4j.xml.DOMConfigurator;
@@ -12,11 +11,14 @@ import org.chaoticbits.devactivity.DBUtil;
 import org.chaoticbits.devactivity.PropsLoader;
 import org.chaoticbits.devactivity.devnetwork.factory.LoadSVNtoDB;
 
+import com.google.gdata.util.ServiceException;
+
 import edu.rit.se.history.tomcat.filter.FilepathFilters;
 import edu.rit.se.history.tomcat.parse.CVEsParser;
 import edu.rit.se.history.tomcat.parse.FileListingParser;
 import edu.rit.se.history.tomcat.parse.GroundedTheoryResultsParser;
 import edu.rit.se.history.tomcat.parse.VulnerabilitiesToFilesParser;
+import edu.rit.se.history.tomcat.scrapers.GoogleDocExport;
 
 public class RebuildHistory {
 	private static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(RebuildHistory.class);
@@ -39,6 +41,7 @@ public class RebuildHistory {
 	}
 
 	public void run() throws Exception {
+		downloadGoogleDocs(props);
 		rebuildSchema(dbUtil);
 		// loadSVNXML(dbUtil, props);
 		// filterSVNLog(dbUtil, props);
@@ -60,9 +63,17 @@ public class RebuildHistory {
 
 	private DBUtil setUpDB(Properties props) throws ClassNotFoundException {
 		Class.forName("com.mysql.jdbc.Driver");
-		DBUtil dbUtil = new DBUtil(props.getProperty("history.dbuser"), props.getProperty("history.dbpw"),
-				props.getProperty("history.dburl"));
+		DBUtil dbUtil = new DBUtil(props.getProperty("history.dbuser"), props.getProperty("history.dbpw"), props.getProperty("history.dburl"));
 		return dbUtil;
+	}
+
+	private void downloadGoogleDocs(Properties props) throws IOException, ServiceException {
+		log.info("Downloading the latest GoogleDocs...");
+		GoogleDocExport export = new GoogleDocExport();
+		export.add(props.getProperty("history.cves.googledoc"), new File(datadir, props.getProperty("history.cves.local")));
+		export.add(props.getProperty("history.cve2files.googledoc"), new File(datadir, props.getProperty("history.cve2files.local")));
+		export.add(props.getProperty("history.groundedtheory.googledoc"), new File(datadir, props.getProperty("history.groundedtheory.local")));
+		export.downloadCSVs(props.getProperty("google.username"), props.getProperty("google.password"));
 	}
 
 	private void rebuildSchema(DBUtil dbUtil) throws FileNotFoundException, SQLException, IOException {
@@ -89,12 +100,12 @@ public class RebuildHistory {
 
 	private void loadGroundedTheoryResults(DBUtil dbUtil, Properties props) throws Exception {
 		log.info("Parsing grounded theory results...");
-		new GroundedTheoryResultsParser().parse(dbUtil, new File(datadir, props.getProperty("history.groundedtheory")));
+		new GroundedTheoryResultsParser().parse(dbUtil, new File(datadir, props.getProperty("history.groundedtheory.local")));
 	}
 
 	private void loadCVEs(DBUtil dbUtil, Properties props) throws Exception {
 		log.info("Parsing CVE details...");
-		new CVEsParser().parse(dbUtil, new File(datadir, props.getProperty("history.cves")));
+		new CVEsParser().parse(dbUtil, new File(datadir, props.getProperty("history.cves.local")));
 	}
 
 	private void filterSVNLog(DBUtil dbUtil, Properties props) {
@@ -103,7 +114,7 @@ public class RebuildHistory {
 
 	private void loadVulnerabilitiesToFiles(DBUtil dbUtil, Properties props) throws Exception {
 		log.info("Parsing CVE to Files...");
-		new VulnerabilitiesToFilesParser().parse(dbUtil, new File(datadir, props.getProperty("history.cve2files")));
+		new VulnerabilitiesToFilesParser().parse(dbUtil, new File(datadir, props.getProperty("history.cve2files.local")));
 	}
 
 	private void optimizeTables(DBUtil dbUtil) throws FileNotFoundException, SQLException, IOException {
