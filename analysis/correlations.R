@@ -22,13 +22,18 @@ length(cve$NonIOImprovedLogic[cve$NonIOImprovedLogic=="Yes"]) / length(cve$NonIO
 # What percentage of the vulnerabilities were domain specific?
 length(cve$DomainSpecific[cve$DomainSpecific=="Yes"]) / length(cve$DomainSpecific)
 
+# What percentage of the vulnerabilities were CWE Top 25?
+length(cve$CWETop25[cve$CWETop25=="Yes"]) / length(cve$CWETop25)
+
+# What percentage of the vulnerabilities were not even defined in the CWE?
+length(cve$CWE[cve$CWE=="Not Defined"]) / length(cve$CWE)
+
 # Are CWETop25 vulnerabilities statistically different than domain-specific?
 table(cve$CWETop25, cve$DomainSpecific)
 chisq.test(cve$CWETop25, cve$DomainSpecific)
 
-#AllCounts <- sqlQuery(conn, "SELECT * FROM AllCounts")
-#histogram(~AllCounts$NumDevs | AllCounts$HadVulns, type="count", col="red", main="Vulnerable NumDevs", freq=TRUE, xlab="Number of Developers")
-#wilcox.test(AllCounts$NumDevs[AllCounts$HadVulns=="neutral"], AllCounts$NumDevs[AllCounts$HadVulns=="neutral"])
+# Do vulnerable files have more SLOC than neutral files?
+#wilcox.test(files$SLOC[files$vuln=="vulnerable"], files$SLOC[file$vuln=="neutral"])
 
 odbcClose(conn)
 rm(conn)
