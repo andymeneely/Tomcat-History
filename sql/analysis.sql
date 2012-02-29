@@ -28,7 +28,6 @@ CREATE VIEW FileResults AS
         f.TomcatRelease, 
         f.SLOCType, 
         f.SLOC,
-        IF(cf.CVE IS NULL, 'neutral','vulnerable') vuln,
-        c.*
-	FROM (filepaths f LEFT OUTER JOIN CVENonSVNFix cf ON (f.filepath=cf.filepath)) LEFT OUTER JOIN CVE c ON (cf.CVE=c.CVE)
+        IF(cf.CVE IS NULL, 'neutral','vulnerable') vuln
+	FROM (filepaths f LEFT OUTER JOIN CVENonSVNFix cf ON (f.filepath=cf.filepath))
 ;
