@@ -4,10 +4,6 @@ conn <- odbcConnect("tomcathistory", uid="tomcathistory", pwd="tomcathistory", c
 
 cve <- sqlQuery(conn, "SELECT * FROM CVEResults")
 files <- sqlQuery(conn, "SELECT * FROM FileResults")
-javaFiles <- sqlQuery(conn, "SELECT * FROM FileResults WHERE SLOCType='Java'")
-cFiles <- sqlQuery(conn, "SELECT * FROM FileResults WHERE SLOCType='C' OR SLOCType='C/C++ Header'")
-
-
 
 # What percentage of the fixes are new code?
 length(cve$FixNewCode[cve$FixNewCode=="Yes"]) / length(cve$FixNewCode)
@@ -39,6 +35,7 @@ chisq.test(cve$CWETop25, cve$DomainSpecific)
 
 # Do vulnerable files have more SLOC than neutral files?
 ## Java only
+javaFiles <- sqlQuery(conn, "SELECT * FROM FileResults WHERE SLOCType='Java'")
 mean(javaFiles$SLOC[javaFiles$vuln=="vulnerable"], na.rm=TRUE)
 mean(javaFiles$SLOC[javaFiles$vuln=="neutral"], na.rm=TRUE)
 wilcox.test(javaFiles$SLOC[javaFiles$vuln=="vulnerable"], javaFiles$SLOC[javaFiles$vuln=="neutral"])
