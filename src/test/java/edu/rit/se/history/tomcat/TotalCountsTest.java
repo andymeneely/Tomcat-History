@@ -39,6 +39,15 @@ public class TotalCountsTest {
 	}
 
 	@Test
+	public void cveAnalysisCounts() throws Exception {
+		Connection conn = history.getDbUtil().getConnection();
+		ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(*) FROM CVEResults");
+		rs.next();
+		assertEquals("CVE table includes all CVEs", TOTAL_CVES, rs.getInt(1));
+		conn.close();
+	}
+
+	@Test
 	public void allCVEsTraced() throws Exception {
 		Connection conn = history.getDbUtil().getConnection();
 		ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(DISTINCT CVE) FROM CVENonSVNFix");
@@ -50,17 +59,17 @@ public class TotalCountsTest {
 	@Test
 	public void vulnerableFilesAtReleaseAccountedFor() throws Exception {
 		Connection conn = history.getDbUtil().getConnection();
-		ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(*) FROM CVENonSVNFix");
-		rs.next();
-		int expectedCount = rs.getInt(1);
-		rs = conn.createStatement()
-				.executeQuery("SELECT COUNT(*) FROM CVENonSVNFix cf, Filepaths f WHERE cf.filepath=f.filepath");
+		ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(*) FROM cvenonsvnfix WHERE filepath NOT IN (SELECT filepath FROM filepaths)");
 		rs.next();
 		int actualCount = rs.getInt(1);
 		conn.close();
-		assertEquals("All vulnerable files are in filepath release list", expectedCount, actualCount);
+		assertEquals("Only one file was added post-release", 1, actualCount);
+
 		// Query to debug this one:
-		// SELECT * FROM CVENonSVNFix cf LEFT OUTER JOIN Filepaths f ON cf.filepath=f.filepath ORDER BY cf.cve ASC
+		// SELECT * FROM CVENonSVNFix cf LEFT OUTER JOIN Filepaths f ON cf.filepath=f.filepath ORDER BY
+		// cf.cve ASC
+		// Another query to debug:
+		// SELECT cve,filepath FROM cvenonsvnfix WHERE filepath NOT IN (SELECT filepath FROM filepaths)
 	}
 
 	// @Test
