@@ -50,7 +50,7 @@ public class RebuildHistory {
 		loadGroundedTheoryResults(dbUtil, props);
 		loadCVEs(dbUtil, props);
 		optimizeTables(dbUtil);
-		// buildAnalysis(dbUtil, props);
+		buildAnalysis(dbUtil, props);
 		log.info("Done.");
 	}
 
@@ -122,7 +122,7 @@ public class RebuildHistory {
 		dbUtil.executeSQLFile("sql/optimizeTables.sql");
 	}
 
-	private void buildAnalysis(DBUtil dbUtil, Properties props) {
-		throw new IllegalStateException("unimplemented!");
+	private void buildAnalysis(DBUtil dbUtil, Properties props) throws FileNotFoundException, SQLException, IOException {
+		dbUtil.executeSQLFile("sql/analysis.sql");
 	}
 }
