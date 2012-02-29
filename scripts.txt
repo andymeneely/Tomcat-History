@@ -7,3 +7,9 @@ $ svn log http://svn.apache.org/repos/asf/tocmat/trunk --verbose --xml > tomcat-
 $ svn ls -R http://svn.apache.org/repos/asf/tomcat/tc5.5.x/tags/TOMCAT_5_5_0/ > tomcat5.5.0-files.txt 
 $ svn ls -R http://svn.apache.org/repos/asf/tomcat/tc6.0.x/tags/TOMCAT_6_0_0/ > tomcat6.0.0-files.txt
 $ svn ls -R http://svn.apache.org/repos/asf/tomcat/tc7.0.x/tags/TOMCAT_7_0_0/ > tomcat7.0.0-files.txt
+
+# To get SLOC counts, use the cloc script
+# http://sourceforge.net/projects/cloc/
+# This dumps the file-level information into a csv
+# $ cd tomcat55/ 
+$ perl ../cloc-1.55.pl --sql=1 ../tomcat55/ | sqlite3 ../sloc.db
