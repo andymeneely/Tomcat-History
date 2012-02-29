@@ -23,6 +23,10 @@ history.filelisting.v5=tomcat5.5.0-files.txt
 history.filelisting.v6=tomcat6.0.0-files.txt
 history.filelisting.v7=tomcat7.0.0-files.txt
 
+history.sloc.v5=sloc5.5.csv
+history.sloc.v6=sloc6.0.csv
+history.sloc.v7=sloc7.0.csv
+
 history.dbuser=tomcathistory
 history.dbpw=tomcathistory
 history.dburl=jdbc:mysql://127.0.0.1:3306/tomcathistory
