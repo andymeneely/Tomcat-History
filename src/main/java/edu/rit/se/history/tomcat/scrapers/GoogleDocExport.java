@@ -4,19 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
-import org.chaoticbits.devactivity.PropsLoader;
-
-import com.google.gdata.client.GoogleService;
 import com.google.gdata.client.Service.GDataRequest;
-import com.google.gdata.client.authn.oauth.OAuthException;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
-import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ServiceException;
 
 public class GoogleDocExport {

@@ -1,7 +1,6 @@
 package edu.rit.se.history.tomcat.parse;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -9,9 +8,9 @@ import java.sql.SQLException;
 
 import org.chaoticbits.devactivity.DBUtil;
 
-import com.mysql.jdbc.Connection;
-
 import au.com.bytecode.opencsv.CSVReader;
+
+import com.mysql.jdbc.Connection;
 
 public class VulnerabilitiesToFilesParser {
 
