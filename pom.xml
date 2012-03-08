@@ -5,10 +5,10 @@
 	<artifactId>tomcat</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<repositories>
-	<repository>
-		<id>mandubian-mvn</id>
-		<url>http://mandubian-mvn.googlecode.com/svn/trunk/mandubian-mvn/repository</url>
-	</repository>
+		<repository>
+			<id>mandubian-mvn</id>
+			<url>http://mandubian-mvn.googlecode.com/svn/trunk/mandubian-mvn/repository</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
