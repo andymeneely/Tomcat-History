@@ -17,7 +17,7 @@ public class TotalCountsTest {
 	@BeforeClass
 	public static void initDB() throws Exception {
 		history = new RebuildHistory();
-//		history.run(); // only if we think we need to reset
+		history.run(); // only if we think we need to reset
 	}
 
 	@Test
@@ -77,9 +77,9 @@ public class TotalCountsTest {
 		// Fixed in trunk, but not found in the 5.5 release, so we're ignoring it
 		// * connectors/jk/java/org/apache/jk/common/ChannelNioSocket.java
 
-		// Some other stuff related to AbstractAprProcessor were refactorings after the fact (pulling out abstraction) - those were ignored
-	
-		
+		// Some other stuff related to AbstractAprProcessor were refactorings after the fact (pulling out
+		// abstraction) - those were ignored
+
 	}
 
 	@Test
@@ -115,15 +115,5 @@ public class TotalCountsTest {
 		conn.close();
 		assertEquals("All CVEs accounted for", 0, actualCount);
 	}
-
-	// @Test
-	// public void fileCounts() throws Exception {
-	// throw new IllegalStateException("unimplemented!");
-	// }
-
-	// @Test
-	// public void cveResultsCounts() throws Exception {
-	// throw new IllegalStateException("unimplemented!");
-	// }
 
 }
