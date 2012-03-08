@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS CVE;
 DROP TABLE IF EXISTS CVESVNFix;
 DROP TABLE IF EXISTS CVENonSVNFix;
 DROP TABLE IF EXISTS CVEGroundedTheory;
+DROP TABLE IF EXISTS CVEGroundedTheoryAssets;
 
 CREATE TABLE SVNLog (
   ID int(10) unsigned NOT NULL auto_increment,
@@ -60,6 +61,16 @@ CREATE TABLE CVEGroundedTheory (
   OutputCleansing ENUM('Yes', 'No') NOT NULL,
   NonIOImprovedLogic ENUM('Yes', 'No') NOT NULL,
   DomainSpecific ENUM('Yes', 'No') NOT NULL,
+  Regression ENUM('Yes', 'No') NOT NULL,
+  SourceCode ENUM('Yes', 'No') NOT NULL,
+  ConfigFile ENUM('Yes', 'No') NOT NULL,
+  PRIMARY KEY  (`ID`)
+) ENGINE=MyISAM;
+
+CREATE TABLE CVEGroundedTheoryAssets (
+  ID int(10) unsigned NOT NULL auto_increment,
+  CVE VARCHAR(15) NOT NULL,
+  Asset VARCHAR(50) NOT NULL,
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM;
 

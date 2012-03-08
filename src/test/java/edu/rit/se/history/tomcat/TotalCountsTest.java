@@ -128,5 +128,4 @@ public class TotalCountsTest {
 		// Query to debug:
 		// SELECT Filepath,CVE,Count(*) NUM FROM CVENonSVNFix GROUP BY Filepath, CVE HAVING NUM > 1
 	}
-
 }
