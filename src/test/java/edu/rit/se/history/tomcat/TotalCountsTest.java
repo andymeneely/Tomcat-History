@@ -17,7 +17,7 @@ public class TotalCountsTest {
 	@BeforeClass
 	public static void initDB() throws Exception {
 		history = new RebuildHistory();
-		history.run(); // only if we think we need to reset
+//		history.run(); // only if we think we need to reset
 	}
 
 	@Test
@@ -114,6 +114,19 @@ public class TotalCountsTest {
 		int actualCount = rs.getInt(1);
 		conn.close();
 		assertEquals("All CVEs accounted for", 0, actualCount);
+	}
+
+	@Test
+	public void oneFilepathDistinctlyPerCVE() throws Exception {
+		Connection conn = history.getDbUtil().getConnection();
+		ResultSet rs = conn.createStatement().executeQuery(
+				"SELECT COUNT(*) FROM (SELECT Filepath,CVE,Count(*) NUM FROM CVENonSVNFix  GROUP BY Filepath, CVE HAVING NUM > 1) X");
+		rs.next();
+		int actualCount = rs.getInt(1);
+		conn.close();
+		assertEquals("No situations where we have filepaths counted more than once on a given CVE", 0, actualCount);
+		// Query to debug:
+		// SELECT Filepath,CVE,Count(*) NUM FROM CVENonSVNFix GROUP BY Filepath, CVE HAVING NUM > 1
 	}
 
 }
