@@ -27,10 +27,8 @@ public class VulnerabilitiesToFilesParser {
 			ps.setString(2, line[1]); // Filepath
 			ps.setString(3, line[2]); // Component
 			ps.setString(4, line[3]); // UtilComponent (if it exists)
-			if (line.length > 4) {
-				setIntOrNull(ps, 5, line[4]); // SLOCAdded
-				setIntOrNull(ps, 6, line[5]); // SLOCDeleted
-			}
+			setIntOrNull(ps, 5, line[4]); // SLOCAdded
+			setIntOrNull(ps, 6, line[5]); // SLOCDeleted
 			ps.addBatch();
 		}
 		ps.executeBatch();

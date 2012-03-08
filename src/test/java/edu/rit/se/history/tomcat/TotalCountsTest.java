@@ -17,7 +17,7 @@ public class TotalCountsTest {
 	@BeforeClass
 	public static void initDB() throws Exception {
 		history = new RebuildHistory();
-		history.run(); // only if we think we need to reset
+//		history.run(); // only if we think we need to reset
 	}
 
 	@Test
@@ -63,13 +63,23 @@ public class TotalCountsTest {
 		rs.next();
 		int actualCount = rs.getInt(1);
 		conn.close();
-		assertEquals("Only one file was added post-release", 1, actualCount);
+		assertEquals("Only five files were added post-release", 5, actualCount);
 
 		// Query to debug this one:
 		// SELECT * FROM CVENonSVNFix cf LEFT OUTER JOIN Filepaths f ON cf.filepath=f.filepath ORDER BY
 		// cf.cve ASC
 		// Another query to debug:
 		// SELECT cve,filepath FROM cvenonsvnfix WHERE filepath NOT IN (SELECT filepath FROM filepaths)
+
+		// Files added post-release:
+		// * container/catalina/src/share/org/apache/catalina/util/ExpiringCache.java
+
+		// Fixed in trunk, but not found in the 5.5 release, so we're ignoring it
+		// * connectors/jk/java/org/apache/jk/common/ChannelNioSocket.java
+
+		// Some other stuff related to AbstractAprProcessor were refactorings after the fact (pulling out abstraction) - those were ignored
+	
+		
 	}
 
 	@Test
@@ -80,24 +90,30 @@ public class TotalCountsTest {
 		rs.next();
 		int actualCount = rs.getInt(1);
 		conn.close();
-		assertEquals("Only one file was added post-release", 0, actualCount);
+		assertEquals("Only three file were added post-release", 3, actualCount);
 		// Query to debug this one:
 		// SELECT * FROM filepaths WHERE SLOC IS NULL AND (Filepath LIKE '%.java' OR Filepath LIKE '%.c' OR
 		// Filepath LIKE '%.h')
 	}
-	
+
 	@Test
 	public void allCVESInFixes() throws Exception {
 		Connection conn = history.getDbUtil().getConnection();
-		ResultSet rs = conn.createStatement().executeQuery(
-				"SELECT COUNT(*) FROM filepaths WHERE SLOC IS NULL AND (Filepath LIKE '%.java' OR Filepath LIKE '%.c' OR Filepath LIKE '%.h')");
+		ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(DISTINCT CVE) FROM CVEFixResults");
 		rs.next();
 		int actualCount = rs.getInt(1);
 		conn.close();
-		assertEquals("Only one file was added post-release", 0, actualCount);
-		// Query to debug this one:
-		// SELECT * FROM filepaths WHERE SLOC IS NULL AND (Filepath LIKE '%.java' OR Filepath LIKE '%.c' OR
-		// Filepath LIKE '%.h')
+		assertEquals("All CVEs accounted for", TOTAL_CVES, actualCount);
+	}
+
+	@Test
+	public void allCVEsHaveAFilepath() throws Exception {
+		Connection conn = history.getDbUtil().getConnection();
+		ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(*) FROM cve WHERE cve.cve NOT IN (SELECT CVE FROM CVEFixResults)");
+		rs.next();
+		int actualCount = rs.getInt(1);
+		conn.close();
+		assertEquals("All CVEs accounted for", 0, actualCount);
 	}
 
 	// @Test
