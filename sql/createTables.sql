@@ -75,7 +75,10 @@ CREATE TABLE CVENonSVNFix (
   ID int(10) unsigned NOT NULL auto_increment,
   CVE VARCHAR(15) NOT NULL,
   Filepath varchar(500) NOT NULL,
-  TomcatRelease VARCHAR(5) NOT NULL,
+  Component VARCHAR(50) NOT NULL,
+  UtilComponent VARCHAR(50),
+  SLOCAdded INTEGER,
+  SLOCDeleted INTEGER,
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM;
 
