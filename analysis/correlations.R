@@ -13,6 +13,9 @@ length(cve$Cascades[cve$Cascades=="Yes"]) / length(cve$Cascades)
 
 # What percentage of the vulnerabilities involved input validation?
 length(cve$InputValidation[cve$InputValidation=="Yes"]) / length(cve$InputValidation)
+mean(cve$CVSS[cve$InputValidation=="Yes"])
+mean(cve$CVSS[cve$InputValidation=="No"])
+wilcox.test(cve$CVSS[cve$InputValidation=="Yes"],cve$CVSS[cve$InputValidation=="No"])
 
 # What percentage of the vulnerabilities involved output cleansing?
 length(cve$OutputCleansing[cve$OutputCleansing=="Yes"]) / length(cve$OutputCleansing)
@@ -32,6 +35,20 @@ length(cve$CWE[cve$CWE=="Not Defined"]) / length(cve$CWE)
 # Are CWETop25 vulnerabilities statistically different than domain-specific?
 table(cve$CWETop25, cve$DomainSpecific)
 chisq.test(cve$CWETop25, cve$DomainSpecific)
+
+# How many vulnerabilities had source code files?
+length(cve$SourceCode[cve$SourceCode=="Yes"]) / length(cve$SourceCode)
+
+# How many vulnerabilities had config files?
+length(cve$ConfigFile[cve$ConfigFile=="Yes"]) / length(cve$ConfigFile)
+
+# Source Code x Config File
+table(cve$SourceCode,cve$ConfigFile)
+
+# Average severity for a config file vulnerability
+mean(cve$CVSS[cve$ConfigFile=="Yes"])
+mean(cve$CVSS[cve$ConfigFile=="No"])
+wilcox.test(cve$CVSS[cve$ConfigFile=="Yes"],cve$CVSS[cve$ConfigFile=="No"])
 
 # Do vulnerable files have more SLOC than neutral files?
 ## Java only
