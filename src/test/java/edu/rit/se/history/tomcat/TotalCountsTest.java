@@ -85,6 +85,20 @@ public class TotalCountsTest {
 		// SELECT * FROM filepaths WHERE SLOC IS NULL AND (Filepath LIKE '%.java' OR Filepath LIKE '%.c' OR
 		// Filepath LIKE '%.h')
 	}
+	
+	@Test
+	public void allCVESInFixes() throws Exception {
+		Connection conn = history.getDbUtil().getConnection();
+		ResultSet rs = conn.createStatement().executeQuery(
+				"SELECT COUNT(*) FROM filepaths WHERE SLOC IS NULL AND (Filepath LIKE '%.java' OR Filepath LIKE '%.c' OR Filepath LIKE '%.h')");
+		rs.next();
+		int actualCount = rs.getInt(1);
+		conn.close();
+		assertEquals("Only one file was added post-release", 0, actualCount);
+		// Query to debug this one:
+		// SELECT * FROM filepaths WHERE SLOC IS NULL AND (Filepath LIKE '%.java' OR Filepath LIKE '%.c' OR
+		// Filepath LIKE '%.h')
+	}
 
 	// @Test
 	// public void fileCounts() throws Exception {
