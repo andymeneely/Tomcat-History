@@ -10,6 +10,9 @@ length(cve$FixNewCode[cve$FixNewCode=="Yes"]) / length(cve$FixNewCode)
 
 # What percentage of the vulnerabilities were cascading?
 length(cve$Cascades[cve$Cascades=="Yes"]) / length(cve$Cascades)
+mean(cve$CVSS[cve$Cascades=="Yes"])
+mean(cve$CVSS[cve$Cascades=="No"])
+wilcox.test(cve$CVSS[cve$Cascades=="Yes"],cve$CVSS[cve$Cascades=="No"])
 
 # What percentage of the vulnerabilities involved input validation?
 length(cve$InputValidation[cve$InputValidation=="Yes"]) / length(cve$InputValidation)
