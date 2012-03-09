@@ -68,6 +68,29 @@ CREATE VIEW CVEFixResults AS
 	FROM (filepaths f INNER JOIN CVENonSVNFix cf ON (f.filepath=cf.filepath))
 ;
 
+CREATE VIEW CVEFixChurn AS 
+	SELECT CVE, TomcatRelease,
+	    JavaSLOCAdded,JavaSLOCDeleted, 
+	    JavaSLOCAdded + JavaSLOCDeleted AS JavaChurn,
+	    JSPSLOCAdded,JSPSLOCDeleted,
+	    JSPSLOCAdded + JSPSLOCDeleted JSPChurn,
+	    XMLSLOCAdded,XMLSLOCDeleted,
+	    XMLSLOCAdded + XMLSLOCDeleted XMLChurn
+	FROM
+	    (SELECT  CVE, 
+	            TomcatRelease,
+	            SUM(IF(SLOCType='Java', SLOCAdded, 0)) AS JavaSLOCAdded,
+	            SUM(IF(SLOCType='Java', SLOCDeleted, 0)) AS JavaSLOCDeleted,
+	            
+	            SUM(IF(SLOCType='JSP', SLOCAdded, 0)) AS JSPSLOCAdded,
+	            SUM(IF(SLOCType='JSP', SLOCDeleted, 0)) AS JSPSLOCDeleted,
+	            
+	            SUM(IF(SLOCType='XML', SLOCAdded, 0)) AS XMLSLOCAdded,
+	            SUM(IF(SLOCType='XML', SLOCDeleted, 0)) AS XMLSLOCDeleted
+	    FROM CVEFixResults
+	    GROUP BY CVE, TomcatRelease) Temp
+;
+
 CREATE VIEW FileResults AS 
 	SELECT  f.filepath,
         f.TomcatRelease, 
