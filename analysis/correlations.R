@@ -3,10 +3,18 @@ library(lattice)
 conn <- odbcConnect("tomcathistory", uid="tomcathistory", pwd="tomcathistory", case="tolower")
 
 cve <- sqlQuery(conn, "SELECT * FROM CVEResults")
+fixchurn <- sqlQuery(conn, "SELECT * FROM CVEFixChurn")
 files <- sqlQuery(conn, "SELECT * FROM FileResults")
 
 # What percentage of the fixes are new code?
 length(cve$FixNewCode[cve$FixNewCode=="Yes"]) / length(cve$FixNewCode)
+
+# What is the general size of a fix?
+mean(fixchurn$JavaChurn[fixchurn$JavaChurn!=0])
+median(fixchurn$JavaChurn[fixchurn$JavaChurn!=0])
+mean(fixchurn$JSPChurn[fixchurn$JSPChurn!=0])
+median(fixchurn$JSPChurn[fixchurn$JSPChurn!=0])
+
 
 # What percentage of the vulnerabilities were cascading?
 length(cve$Cascades[cve$Cascades=="Yes"]) / length(cve$Cascades)
@@ -60,5 +68,5 @@ mean(javaFiles$SLOC[javaFiles$vuln=="vulnerable"], na.rm=TRUE)
 mean(javaFiles$SLOC[javaFiles$vuln=="neutral"], na.rm=TRUE)
 wilcox.test(javaFiles$SLOC[javaFiles$vuln=="vulnerable"], javaFiles$SLOC[javaFiles$vuln=="neutral"])
 
-odbcClose(conn)
-rm(conn)
+#odbcClose(conn)
+#rm(conn)

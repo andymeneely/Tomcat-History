@@ -3,6 +3,8 @@ DROP VIEW IF EXISTS FileResults;
 DROP VIEW IF EXISTS CVEFixResults;
 DROP VIEW IF EXISTS ComponentsWithFixes;
 DROP VIEW IF EXISTS AssetsCompromisedResults;
+DROP VIEW IF EXISTS CVEFixChurnTemp;
+DROP VIEW IF EXISTS CVEFixChurn; 
 
 CREATE VIEW CVEResults AS 
 	SELECT 	c.CVE, 
@@ -68,27 +70,30 @@ CREATE VIEW CVEFixResults AS
 	FROM (filepaths f INNER JOIN CVENonSVNFix cf ON (f.filepath=cf.filepath))
 ;
 
+CREATE VIEW CVEFixChurnTemp AS
+	SELECT  CVE, 
+            TomcatRelease,
+            SUM(IF(SLOCType='Java', SLOCAdded, 0)) AS JavaSLOCAdded,
+            SUM(IF(SLOCType='Java', SLOCDeleted, 0)) AS JavaSLOCDeleted,
+            SUM(IF(SLOCType='Java', SLOC, 0)) AS JavaSLOC, 
+            SUM(IF(SLOCType='JSP', SLOCAdded, 0)) AS JSPSLOCAdded,
+            SUM(IF(SLOCType='JSP', SLOCDeleted, 0)) AS JSPSLOCDeleted,
+            SUM(IF(SLOCType='JSP',SLOC, 0)) AS JSPSLOC,
+            SUM(IF(SLOCType='XML', SLOCAdded, 0)) AS XMLSLOCAdded,
+            SUM(IF(SLOCType='XML', SLOCDeleted, 0)) AS XMLSLOCDeleted
+    FROM CVEFixResults
+    GROUP BY CVE, TomcatRelease
+;  
+
 CREATE VIEW CVEFixChurn AS 
 	SELECT CVE, TomcatRelease,
-	    JavaSLOCAdded,JavaSLOCDeleted, 
+	    JavaSLOCAdded,JavaSLOCDeleted, JavaSLOC,
 	    JavaSLOCAdded + JavaSLOCDeleted AS JavaChurn,
-	    JSPSLOCAdded,JSPSLOCDeleted,
-	    JSPSLOCAdded + JSPSLOCDeleted JSPChurn,
-	    XMLSLOCAdded,XMLSLOCDeleted,
-	    XMLSLOCAdded + XMLSLOCDeleted XMLChurn
-	FROM
-	    (SELECT  CVE, 
-	            TomcatRelease,
-	            SUM(IF(SLOCType='Java', SLOCAdded, 0)) AS JavaSLOCAdded,
-	            SUM(IF(SLOCType='Java', SLOCDeleted, 0)) AS JavaSLOCDeleted,
-	            
-	            SUM(IF(SLOCType='JSP', SLOCAdded, 0)) AS JSPSLOCAdded,
-	            SUM(IF(SLOCType='JSP', SLOCDeleted, 0)) AS JSPSLOCDeleted,
-	            
-	            SUM(IF(SLOCType='XML', SLOCAdded, 0)) AS XMLSLOCAdded,
-	            SUM(IF(SLOCType='XML', SLOCDeleted, 0)) AS XMLSLOCDeleted
-	    FROM CVEFixResults
-	    GROUP BY CVE, TomcatRelease) Temp
+	    (JavaSLOCAdded + JavaSLOCDeleted) / JavaSLOC AS JavaRelChurn,
+	    JSPSLOCAdded,JSPSLOCDeleted, JSPSLOC,
+	    JSPSLOCAdded + JSPSLOCDeleted as JSPChurn,
+	    (JSPSLOCAdded + JSPSLOCDeleted) / JSPSLOC AS JSPRelChurn
+	FROM CVEFixChurnTemp	   
 ;
 
 CREATE VIEW FileResults AS 
