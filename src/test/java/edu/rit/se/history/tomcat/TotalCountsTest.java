@@ -17,7 +17,7 @@ public class TotalCountsTest {
 	@BeforeClass
 	public static void initDB() throws Exception {
 		history = new RebuildHistory();
-//		history.run(); // only if we think we need to reset
+		history.run(); // only if we think we need to reset
 	}
 
 	@Test
