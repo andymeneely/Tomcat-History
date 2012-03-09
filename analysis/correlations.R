@@ -12,9 +12,13 @@ length(cve$FixNewCode[cve$FixNewCode=="Yes"]) / length(cve$FixNewCode)
 # What is the general size of a fix?
 mean(fixchurn$JavaChurn[fixchurn$JavaChurn!=0])
 median(fixchurn$JavaChurn[fixchurn$JavaChurn!=0])
+mean(fixchurn$JavaRelChurn[fixchurn$JavaChurn!=0])
+median(fixchurn$JavaRelChurn[fixchurn$JavaChurn!=0])
+
 mean(fixchurn$JSPChurn[fixchurn$JSPChurn!=0])
 median(fixchurn$JSPChurn[fixchurn$JSPChurn!=0])
-
+mean(fixchurn$JSPRelChurn[fixchurn$JSPChurn!=0])
+median(fixchurn$JSPRelChurn[fixchurn$JSPChurn!=0])
 
 # What percentage of the vulnerabilities were cascading?
 length(cve$Cascades[cve$Cascades=="Yes"]) / length(cve$Cascades)
@@ -36,9 +40,15 @@ length(cve$NonIOImprovedLogic[cve$NonIOImprovedLogic=="Yes"]) / length(cve$NonIO
 
 # What percentage of the vulnerabilities were domain specific?
 length(cve$DomainSpecific[cve$DomainSpecific=="Yes"]) / length(cve$DomainSpecific)
+mean(cve$CVSS[cve$DomainSpecific=="Yes"])
+mean(cve$CVSS[cve$DomainSpecific=="No"])
+wilcox.test(cve$CVSS[cve$DomainSpecific=="Yes"],cve$CVSS[cve$DomainSpecific=="No"])
 
 # What percentage of the vulnerabilities were CWE Top 25?
 length(cve$CWETop25[cve$CWETop25=="Yes"]) / length(cve$CWETop25)
+mean(cve$CVSS[cve$CWETop25=="Yes"])
+mean(cve$CVSS[cve$CWETop25=="No"])
+wilcox.test(cve$CVSS[cve$CWETop25=="Yes"],cve$CVSS[cve$CWETop25=="No"])
 
 # What percentage of the vulnerabilities were not even defined in the CWE?
 length(cve$CWE[cve$CWE=="Not Defined"]) / length(cve$CWE)
