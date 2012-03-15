@@ -78,5 +78,12 @@ mean(javaFiles$SLOC[javaFiles$vuln=="vulnerable"], na.rm=TRUE)
 mean(javaFiles$SLOC[javaFiles$vuln=="neutral"], na.rm=TRUE)
 wilcox.test(javaFiles$SLOC[javaFiles$vuln=="vulnerable"], javaFiles$SLOC[javaFiles$vuln=="neutral"])
 
+## JSP only
+jspFiles <- sqlQuery(conn, "SELECT * FROM FileResults WHERE SLOCType='JSP'")
+mean(jspFiles$SLOC[jspFiles$vuln=="vulnerable"], na.rm=TRUE)
+mean(jspFiles$SLOC[jspFiles$vuln=="neutral"], na.rm=TRUE)
+wilcox.test(jspFiles$SLOC[jspFiles$vuln=="vulnerable"], jspFiles$SLOC[jspFiles$vuln=="neutral"])
+
+
 #odbcClose(conn)
 #rm(conn)
