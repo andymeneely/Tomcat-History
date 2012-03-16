@@ -1,7 +1,7 @@
 # Copy and paste this file to build.properties for each of your local installations
 # Edit for yourself as needed
 
-history.datadir=g:/data/tomcat
+history.datadir=C:/data/tomcat
 
 # This is your Google account password - so make sure this doesn't get publicized!!
 # I *strongly* recommend using application-specific passwords for this, or even just a separate username
@@ -27,6 +27,6 @@ history.sloc.v5=sloc5.5.csv
 history.sloc.v6=sloc6.0.csv
 history.sloc.v7=sloc7.0.csv
 
-history.dbuser=tomcathistory
-history.dbpw=tomcathistory
+history.dbuser=root
+history.dbpw=harsha
 history.dburl=jdbc:mysql://127.0.0.1:3306/tomcathistory
